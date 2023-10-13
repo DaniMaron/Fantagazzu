@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <br>
+    <form action="/Register" method="post">
+        <div class="mb-3">
+            <input autofocus class="form-control mx-auto w-auto" id="league" name="league" placeholder="Insert league code" type="text">
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off"  class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Create a password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="confirm" name="confirmation" placeholder="Repeat password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <footer class="mb-5 small text-center text-muted">
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <a href='/CMG'>© Fantagazzu Inc.</a><br>All Rights Reserved
+    </footer>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+{% endblock %}
+

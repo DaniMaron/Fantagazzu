@@ -1,0 +1,175 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+ .modal-dialog {
+    max-width: 30%;
+}
+
+.search {
+  position: fixed;
+  top: 97px;
+  left: 50%;
+  transform: translate(-50%, -55%);
+}
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+
+.btn-sm {
+  padding: 1rem 0.58rem;
+  text-align: center;
+  font-size: 15px;
+  background-color: #36BAB8;
+
+}
+.btn-sm2 {
+  padding: 1rem 0.58rem;
+  text-align: center;
+  font-size: 15px;
+  background-color: #FFE213;
+  color: #C70039
+
+}
+.btn-sm3 {
+  padding: 1rem 0.58rem;
+  text-align: center;
+  font-size: 15px;
+  background-color: #FFE213;
+  color: #C70039
+
+}
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font: 16px Arial;
+  }
+
+  .autocomplete {
+    position: relative;
+    display: inline-block;
+  }
+
+  input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+
+  input[type=submit] {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .flash {
+    position: absolute;
+    top: 100px;
+    width: 100%;
+  }
+
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+
+  /*when hovering an item:*/
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9;
+  }
+
+  /*when navigating through the items using the arrow keys:*/
+  .autocomplete-active {
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+
+  iframe::-webkit-media-controls-title {
+    display: none;
+  }
+
+  .form-control {
+    background-color: #ffffff !important;
+  }
+
+
+.collapsible {
+    background-color: #5DCBC5;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid white;
+    text-align: center;
+    outline: none;
+    font-size: 45px;
+}
+
+.active, .collapsible:hover {
+    background-color: #59BEB8;
+}
+
+.content {
+  display: none;
+}
+
+.blue-column-header {
+  color: blue;
+  font-size: 17px;
+}
+
+.roles {
+  font-size: 19px;
+  width: 100%;
+  color: #48281F;
+  font-weight: bold;
+}

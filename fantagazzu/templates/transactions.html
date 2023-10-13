@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Transactions
+{% endblock %}
+
+{% block main %}
+<meta name="viewport" content="initial-scale=0.78, width=device-width">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-start">User</th>
+            <th class="text-start">Action</th>
+            <th class="text-start">Player</th>
+            <th class="text-center">Price</th>
+            <th class="text-end">Transacted</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tran in trans %}
+            <tr>
+                <td class="text-start">{{ tran.user }}</td>
+                <td class="text-start">{{ tran.action }}</td>
+                <td class="text-start">{{ tran.player }}</td>
+                <td class="text-center">{{ tran.price }}</td>
+                <td class="text-end">{{ tran.tist }}</td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}

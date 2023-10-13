@@ -1,0 +1,200 @@
+{% extends "index.html" %}
+
+{% block title %}
+    League
+{% endblock %}
+
+{% block main %}
+<meta name="viewport" content="initial-scale=0.86, width=device-width">
+<br>
+<h2 style="font-weight:bold; color:#BB2900">PARTICIPANTS</h2>
+{%for participant in participants %}
+
+    <div>
+        <button type="button" class="collapsible">{{participant.username | upper}}
+          <table class="roles">
+          <thead>
+              <tr>
+                  <td class="text-center">P <span style='color: black; font-size: 20px'>{{participant.p}}</span>/3</td>
+                  <td class="text-center">D <span style='color: black; font-size: 20px'>{{participant.d}}</span>/8</td>
+                  <td class="text-center">C <span style='color: black; font-size: 20px'>{{participant.c}}</span>/8</td>
+                  <td class="text-center">A <span style='color: black; font-size: 20px'>{{participant.a}}</span>/6</td>
+                      <td class="text-end">$ <span style='color: black; font-size: 20px'>{{participant.tokens}}</span></td>
+              </tr>
+          </thead>
+        </table>
+        </button>
+        <div class="content">
+
+
+          {% if participant.id in buyers %}
+            <table class="table table-striped">
+                <thead id="table-container">
+                  <tr>
+                      <th class="text-center blue-column-header">R</button></th>
+                      <th class="text-center blue-column-header">Squadra</button></th>
+                      <th class="text-center  blue-column-header">Nome</button></th>
+                      <th class="text-center blue-column-header">Paid</button></th>
+                      <th class="text-center blue-column-header">IA</button></th>
+                  </tr>
+                </thead>
+          {% endif %}
+
+                <tbody>
+                  {% for player in players %}
+                    {% if player.Bought == participant.id %}
+                    <tr onClick="modmodal('{{player.Id}}','{{player.R}}','{{player.RM}}',`{{player.Nome}}`,'{{player.Pv}}','{{player.Mv}}','{{player.Mf}}','{{player.Gf}}','{{player.Gs}}','{{player.Rp}}','{{player.Rc}}','{{player.Rpiu}}','{{player.Rmeno}}','{{player.Ass}}','{{player.Amm}}','{{player.Esp}}','{{player.Au}}','{{player.Bought}}','{{player.Paid}}', {{faves}})" data-toggle="modal" data-target="#exampleModal">
+                        <td class="text-center">{{player.R}}</td>
+                        <td class="text-center">{{player.Squadra}}</td>
+                        <td class="text-center"><strong>{{player.Nome}}</strong></td>
+                        <td class="text-center"><span style='color: #ea433b'>{{player.Paid}}</span></td>
+                        <td class="text-center"><span style='color: #2e944b'>{{player.IA}}</span></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+{% endfor %}
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 100%;" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modtit"></h4>
+        </div>
+        <div class="modal-body">
+          <h5 class="modal-body" id="modbod"></h5>
+        </div>
+        <div class="modal-footer" id="modfoot">
+          <form method="post" action="/star">
+            <input type="hidden" name="page_id" value="l">
+            <button type="submit" id="star" name="star" class="btn btn-primary btn-info mx-auto" style="display: none;"><img src="static/star.png" width="19"></button>
+          </form>
+          <form method="post" action="/unstar">
+            <input type="hidden" name="page_id" value="l">
+            <button type="submit" id="unstar" name="unstar" class="btn btn-primary btn-info mx-auto" style="display: none;"><img src="static/unstar.png" width="19"></button>
+          </form>
+          <form method="post" action="/buy">
+            <input type="hidden" name="page_id" value="l">
+            <button type="submit" id="buy" name="buy" class="btn btn-secondary btn-success mx-auto" style="display: none;">Buy</button>
+          </form>
+          <form method="post" action="/sell">
+            <input type="hidden" name="page_id" value="l">
+            <button type="submit" id="sell" name="sell" class="btn btn-secondary btn-danger mx-auto" style="display: none;">Sell</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+              content.style.display = "none";
+            } else {
+              content.style.display = "block";
+            }
+          });
+        }
+
+          function modmodal(id, r, rm, nome, pv, mv, mf, gf, gs, rp, rc, rpiu, rmeno, ass, amm, esp, au, bought, paid, faves) {
+            document.getElementById("modtit").innerHTML = "<span style='color: red'>Statistiche 2021/22<br> </span>"+
+            "<span style='color: black; font-weight: bold; font-size: 30px'>" + (nome) + "</span>" +
+            "<br>(" +
+            "<span style='color: blue'>" + rm + "</span>" +
+            ")";
+            document.getElementById("modtit").style.fontWeight = "bold";
+            document.getElementById("modtit").style.color = "black";
+            if (r == 'P') {
+              document.getElementById("modbod").innerHTML = "<table style='margin: auto;'>" +
+                "<tr><td> Partite a Voto: </td><td>" + pv.bold() + " </td></tr>" +
+                "<tr><td> Media Voto: </td><td>" + mv.bold() + " </td></tr>" +
+                "<tr><td> Fantamedia: </td><td>" + mf.bold() + " </td></tr>" +
+                "<tr><td> Goal Fatti: </td><td>" + gf.bold() + " </td></tr>" +
+                "<tr><td> Goal Subiti: </td><td>" + gs.bold() + " </td></tr>" +
+                "<tr><td> Rigori Parati: </td><td>" + rp.bold() + " </td></tr>" +
+                "<tr><td> Assist: </td><td>" + ass.bold() + " </td></tr>" +
+                "<tr><td> Ammonizioni: </td><td>" + amm.bold() + " </td></tr>" +
+                "<tr><td> Espulsioni: </td><td>" + esp.bold() + " </td></tr>" +
+                "<tr><td> Autogol: </td><td>" + au.bold() + " </td></tr>" +
+                "</table>";
+              }
+              else {
+                document.getElementById("modbod").innerHTML = "<table style='margin: auto;'>" +
+                  "<tr><td> Partite a Voto: </td><td>" + pv.bold() + " </td></tr>" +
+                  "<tr><td> Media Voto: </td><td>" + mv.bold() + " </td></tr>" +
+                  "<tr><td> Fantamedia: </td><td>" + mf.bold() + " </td></tr>" +
+                  "<tr><td> Goal Fatti: </td><td>" + gf.bold() + " </td></tr>" +
+                  "<tr><td> Rigori Calciati: </td><td>" + rc.bold() + " </td></tr>" +
+                  "<tr><td> Rigori Segnati: </td><td>" + rpiu.bold() + " </td></tr>" +
+                  "<tr><td> Rigori Sbagliati: </td><td>" + rmeno.bold() + " </td></tr>" +
+                  "<tr><td> Assist: </td><td>" + ass.bold() + " </td></tr>" +
+                  "<tr><td> Ammonizioni: </td><td>" + amm.bold() + " </td></tr>" +
+                  "<tr><td> Espulsioni: </td><td>" + esp.bold() + " </td></tr>" +
+                  "<tr><td> Autogoal: </td><td>" + au.bold() + " </td></tr>" +
+                  "</table>";
+              }
+
+
+              if (bought === 'None') {
+                document.querySelector("#buy").style.display = 'block';
+                document.querySelector("#sell").style.display = 'none';
+
+              } else if (bought === '{{ user }}') {
+                document.querySelector("#buy").style.display = 'none';
+                document.querySelector("#sell").style.display = 'block';
+
+              } else {
+                document.querySelector("#buy").style.display = 'none';
+                document.querySelector("#sell").style.display = 'none';
+
+              }
+
+              if (faves.includes(parseInt(id))) {
+                document.querySelector("#star").style.display = 'none';
+                document.querySelector("#unstar").style.display = 'block';
+              }
+              else {
+                document.querySelector("#star").style.display = 'block';
+                document.querySelector("#unstar").style.display = 'none';
+              }
+
+
+              const buyButton = document.getElementById("buy");
+              buyButton.addEventListener("click", function() {
+                // set the button's value attribute to the desired value
+                buyButton.value = id;
+              });
+
+              const sellButton = document.getElementById("sell");
+              sellButton.addEventListener("click", function() {
+                // set the button's value attribute to the desired value
+                sellButton.value = id;
+              });
+
+              const starButton = document.getElementById("star");
+              starButton.addEventListener("click", function() {
+                // set the button's value attribute to the desired value
+                starButton.value = id;
+              });
+
+              const unstarButton = document.getElementById("unstar");
+              unstarButton.addEventListener("click", function() {
+                // set the button's value attribute to the desired value
+                unstarButton.value = id;
+              });
+
+            }
+
+    </script>
+
+{% endblock %}
+

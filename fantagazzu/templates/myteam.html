@@ -1,0 +1,246 @@
+{% extends "index.html" %}
+
+{% block title %}
+My Team
+{% endblock %}
+
+{% block main %}
+
+<meta name="viewport" content="initial-scale=0.92, width=device-width">
+
+<form action="/TeamSearch" method="post" class="search" >
+  <div class="autocomplete" style="width:300px;">
+    <input id="teamsearch" type="text" name="teamsearch" placeholder="Search My Team" style="text-align:center;">
+  </div>
+</form>
+{% if not players %}
+<br><br><br><br><br>
+  <h4>No players were found!</h4>
+{% else %}
+  <br><br>
+  <table class="table">
+    <thead>
+        <tr>
+            <td class="text-center">P <span style='color: black; font-weight: bold; font-size: 17px'>{{roles[0]['p']}}</span>/3</td>
+            <td class="text-center">D <span style='color: black; font-weight: bold; font-size: 17px'>{{roles[0]['d']}}</span>/8</td>
+            <td class="text-center">C <span style='color: black; font-weight: bold; font-size: 17px'>{{roles[0]['c']}}</span>/8</td>
+            <td class="text-center">A <span style='color: black; font-weight: bold; font-size: 17px'>{{roles[0]['a']}}</span>/6</td>
+                <td class="text-end">$ <span style='color: black; font-weight: bold; font-size: 17px'>{{roles[0]['tokens']}}</span></td>
+        </tr>
+    </thead>
+</table>
+  <table class="table table-striped">
+        <thead id="table-container">
+          <tr>
+            <form method="post" action="/MyTeam">
+              <th class="text-center flex-fill"><button class="btn btn-success w-100" type="submit" name="button" value="r">R</button></th>
+              <th class="text-center flex-fill"><button class="btn btn-success w-100" type="submit" name="button" value="squadra">Squadra</button></th>
+              <th class="text-center flex-fill"><button class="btn btn-success w-100" type="submit" name="button" value="nome">Nome</button></th>
+              <th class="text-center flex-fill"><button class="btn btn-success w-100" type="submit" name="button" value="paid">Paid</button></th>
+              <th class="text-center flex-fill"><button class="btn btn-success w-100" type="submit" name="button" value="ia">IA</button></th>
+            </form>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for player in players %}
+          <tr onClick="modmodal('{{player.Id}}','{{player.R}}','{{player.RM}}',`{{player.Nome}}`,'{{player.Pv}}','{{player.Mv}}','{{player.Mf}}','{{player.Gf}}','{{player.Gs}}','{{player.Rp}}','{{player.Rc}}','{{player.Rpiu}}','{{player.Rmeno}}','{{player.Ass}}','{{player.Amm}}','{{player.Esp}}','{{player.Au}}','{{player.Bought}}','{{player.Paid}}', {{faves}})" data-toggle="modal" data-target="#exampleModal">
+            <td class="text-center">{{player.R}}</td>
+            <td class="text-center">{{player.Squadra}}</td>
+            <td class="text-center"><strong>{{player.Nome}}</strong></td>
+            <td class="text-center"><span style='color: #ea433b'>{{player.Paid}}</span></td>
+            <td class="text-center"><span style='color: #2e944b'>{{player.IA}}</span></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 100%;" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modtit"></h4>
+          </div>
+          <div class="modal-body">
+            <h5 class="modal-body" id="modbod"></h5>
+          </div>
+          <div class="modal-footer" id="modfoot">
+            <form method="post" action="/star">
+                <input type="hidden" name="page_id" value="t">
+                <button type="submit" id="star" name="star" class="btn btn-primary btn-info mx-auto" style="display: none;"><img src="static/star.png" width="19"></button>
+              </form>
+            <form method="post" action="/unstar">
+              <input type="hidden" name="page_id" value="t">
+              <button type="submit" id="unstar" name="unstar" class="btn btn-primary btn-info mx-auto" style="display: none;"><img src="static/unstar.png" width="19"></button>
+            </form>
+            <form method="post" action="/sell">
+              <input type="hidden" name="page_id" value="t">
+              <button type="submit" id="sell" name="sell" class="btn btn-secondary btn-danger mx-auto">Sell</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {% endif %}
+
+          <script>
+            function modmodal(id, r, rm, nome, pv, mv, mf, gf, gs, rp, rc, rpiu, rmeno, ass, amm, esp, au, bought, paid, faves) {
+              document.getElementById("modtit").innerHTML = "<span style='color: red'>Statistiche 2021/22<br> </span>"+
+              "<span style='color: black; font-weight: bold; font-size: 30px'>" + (nome) + "</span>" +
+              "<br>(" +
+              "<span style='color: blue'>" + rm + "</span>" +
+              ")";
+              document.getElementById("modtit").style.fontWeight = "bold";
+              document.getElementById("modtit").style.color = "black";
+              if (r == 'P') {
+                document.getElementById("modbod").innerHTML = "<table style='margin: auto;'>" +
+                  "<tr><td> Partite a Voto: </td><td>" + pv.bold() + " </td></tr>" +
+                  "<tr><td> Media Voto: </td><td>" + mv.bold() + " </td></tr>" +
+                  "<tr><td> Fantamedia: </td><td>" + mf.bold() + " </td></tr>" +
+                  "<tr><td> Goal Fatti: </td><td>" + gf.bold() + " </td></tr>" +
+                  "<tr><td> Goal Subiti: </td><td>" + gs.bold() + " </td></tr>" +
+                  "<tr><td> Rigori Parati: </td><td>" + rp.bold() + " </td></tr>" +
+                  "<tr><td> Assist: </td><td>" + ass.bold() + " </td></tr>" +
+                  "<tr><td> Ammonizioni: </td><td>" + amm.bold() + " </td></tr>" +
+                  "<tr><td> Espulsioni: </td><td>" + esp.bold() + " </td></tr>" +
+                  "<tr><td> Autogol: </td><td>" + au.bold() + " </td></tr>" +
+                  "</table>";
+                }
+                else {
+                  document.getElementById("modbod").innerHTML = "<table style='margin: auto;'>" +
+                    "<tr><td> Partite a Voto: </td><td>" + pv.bold() + " </td></tr>" +
+                    "<tr><td> Media Voto: </td><td>" + mv.bold() + " </td></tr>" +
+                    "<tr><td> Fantamedia: </td><td>" + mf.bold() + " </td></tr>" +
+                    "<tr><td> Goal Fatti: </td><td>" + gf.bold() + " </td></tr>" +
+                    "<tr><td> Rigori Calciati: </td><td>" + rc.bold() + " </td></tr>" +
+                    "<tr><td> Rigori Segnati: </td><td>" + rpiu.bold() + " </td></tr>" +
+                    "<tr><td> Rigori Sbagliati: </td><td>" + rmeno.bold() + " </td></tr>" +
+                    "<tr><td> Assist: </td><td>" + ass.bold() + " </td></tr>" +
+                    "<tr><td> Ammonizioni: </td><td>" + amm.bold() + " </td></tr>" +
+                    "<tr><td> Espulsioni: </td><td>" + esp.bold() + " </td></tr>" +
+                    "<tr><td> Autogoal: </td><td>" + au.bold() + " </td></tr>" +
+                    "</table>";
+                }
+
+
+                if (faves.includes(parseInt(id))) {
+                    document.querySelector("#star").style.display = 'none';
+                    document.querySelector("#unstar").style.display = 'block';
+                }
+                else {
+                    document.querySelector("#star").style.display = 'block';
+                    document.querySelector("#unstar").style.display = 'none';
+                }
+
+
+                const sellButton = document.getElementById("sell");
+                sellButton.addEventListener("click", function() {
+                  // set the button's value attribute to the desired value
+                  sellButton.value = id;
+                });
+
+                const starButton = document.getElementById("star");
+                starButton.addEventListener("click", function() {
+                    // set the button's value attribute to the desired value
+                    starButton.value = id;
+                });
+
+                const unstarButton = document.getElementById("unstar");
+                unstarButton.addEventListener("click", function() {
+                  // set the button's value attribute to the desired value
+                  unstarButton.value = id;
+                });
+
+              }
+
+            var my_list = JSON.parse('{{ nomi|tojson }}');
+
+              function autocomplete(inp, arr) {
+                var currentFocus;
+
+                inp.addEventListener("input", function(e) {
+                  var val = this.value;
+                  closeAllLists();
+                  if (!val) { return false; }
+                  currentFocus = -1;
+                  var a = document.createElement("DIV");
+                  a.setAttribute("id", this.id + "autocomplete-list");
+                  a.setAttribute("class", "autocomplete-items");
+                  this.parentNode.appendChild(a);
+                  for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                      var b = document.createElement("DIV");
+                      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                      b.innerHTML += arr[i].substr(val.length);
+                      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                      b.addEventListener("click", function(e) {
+                        var itemValue = this.getElementsByTagName("input")[0].value;
+                        submitForm(itemValue);
+                        closeAllLists();
+                      });
+                      a.appendChild(b);
+                    }
+                  }
+                });
+
+                inp.addEventListener("keydown", function(e) {
+                  var x = document.getElementById(this.id + "autocomplete-list");
+                  if (x) x = x.getElementsByTagName("div");
+                  if (e.keyCode == 40) {
+                    currentFocus++;
+                    addActive(x);
+                  } else if (e.keyCode == 38) {
+                    currentFocus--;
+                    addActive(x);
+                  } else if (e.keyCode == 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                      if (x) x[currentFocus].click();
+                    } else {
+                      submitForm(this.value);
+                      closeAllLists();
+                    }
+                  }
+                });
+
+                function addActive(x) {
+                  if (!x) return false;
+                  removeActive(x);
+                  if (currentFocus >= x.length) currentFocus = 0;
+                  if (currentFocus < 0) currentFocus = (x.length - 1);
+                  x[currentFocus].classList.add("autocomplete-active");
+                }
+
+                function removeActive(x) {
+                  for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                  }
+                }
+
+                function closeAllLists() {
+                  var x = document.getElementsByClassName("autocomplete-items");
+                  for (var i = 0; i < x.length; i++) {
+                      x[i].parentNode.removeChild(x[i]);
+                  }
+                }
+
+                function submitForm(itemValue) {
+                  var form = inp.form;
+                  inp.value = itemValue;
+                  form.submit();
+                }
+
+                document.addEventListener("click", function (e) {
+                  closeAllLists();
+                });
+              }
+
+              autocomplete(document.getElementById("teamsearch"), my_list);
+
+          </script>
+
+
+{% endblock %}
