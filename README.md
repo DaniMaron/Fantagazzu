@@ -1,4 +1,4 @@
-# Fantasy Football
+# Fantagazzu
 
 #### Demo: https://fantagazzu.pythonanywhere.com/
 #### Username: Demo
